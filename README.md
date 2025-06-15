@@ -16,5 +16,5 @@ This repository is for the "Basic Development and Operation" final work submissi
 
 
 *   **URL for both applications:**
-    1.  **Personal Website:** [http://123.56.162.136:8080/]
-    2.  **Todo Application:** [http://123.56.162.136:8081/]
+    1.  **Personal Website:** [http://118.178.232.231:8080/]
+    2.  **Todo Application:** [http://118.178.232.231:8081/]
