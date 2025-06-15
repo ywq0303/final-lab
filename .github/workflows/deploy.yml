@@ -1,4 +1,4 @@
-name: Deploy to Server (Student A)
+name: Deploy to Server
 
 on:
   push:
@@ -28,6 +28,7 @@ jobs:
         run: |
           tar -zcvf package.tar.gz my-app todo-app docker-compose.yml
           scp -r package.tar.gz server:~/
+
 
       - name: Execute Docker Compose
         run: |
