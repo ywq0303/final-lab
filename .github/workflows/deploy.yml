@@ -1,0 +1,41 @@
+name: Deploy to Server (Student A)
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "Host server" >> ~/.ssh/config
+          echo "  HostName ${{ secrets.SERVER_HOST }}" >> ~/.ssh/config
+          echo "  User ${{ secrets.SERVER_USER }}" >> ~/.ssh/config
+          echo "  IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
+          echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+          echo "  UserKnownHostsFile /dev/null" >> ~/.ssh/config
+
+      - name: Deploy via tar over ssh
+        run: |
+          tar -zcvf package.tar.gz my-app todo-app docker-compose.yml
+          scp -r package.tar.gz server:~/
+
+      - name: Execute Docker Compose
+        run: |
+          ssh server << 'EOF'
+            mkdir -p ~/stu1
+            tar -zxvf ~/package.tar.gz -C ~/stu1
+            cd ~/stu1
+
+            docker compose up --build -d
+
+          EOF

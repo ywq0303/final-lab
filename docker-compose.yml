@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  my-app:
+    build: ./my-app
+
+    container_name: student-a-website
+    ports:
+      - "8080:80"
+    restart: always
+
+  todo-app:
+    build: ./todo-app
+    container_name: student-a-todo
+    ports:
+      - "8081:8080"
+    restart: always
